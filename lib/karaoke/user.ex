@@ -1,5 +1,5 @@
 defmodule Karaoke.User do
-  use GenServer
+  use Karaoke.ComponentServer.GenServer
 
   @components [
       Karaoke.User
@@ -24,7 +24,7 @@ defmodule Karaoke.User do
   end
 
   def init([]) do
-    {:ok, %{}}
+    {:ok, %{:components => @components}}
   end
 
   @doc """
@@ -40,14 +40,6 @@ defmodule Karaoke.User do
   """
   def handle_info({:send_tcp, message}, %{ :socket => socket } = state) do
     :ok = :gen_tcp.send(socket, message)   
-    {:noreply, state}
-  end
-
-  @doc """
-  Event received
-  """
-  def handle_info({:event, event}, state) do
-    Karaoke.Event.run_components(@components, event, state)
     {:noreply, state}
   end
 
