@@ -23,6 +23,11 @@ defmodule Karaoke.User do
     {:ok, %{}}
   end
 
+  def handle_info({tcp, socket, packet}, state) do
+    :ok = :gen_tcp.send(socket, packet)
+    {:noreply, state}
+  end
+
   @doc """
     User is now in charge of the socket 
   """
