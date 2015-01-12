@@ -13,7 +13,7 @@ defmodule KaraokeIntegrationTest do
   end
 
   test "server interaction", %{socket: socket} do
-    assert send_and_recv(socket, "Echo") == "Echo"
+    assert send_and_recv(socket, "Echo") == String.reverse("Echo")
   end
 
   defp send_and_recv(socket, command) do
