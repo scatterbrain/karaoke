@@ -2,7 +2,7 @@ defmodule Karaoke.User do
   use Karaoke.ComponentServer.GenServer
 
   @components [
-      Karaoke.User
+      Karaoke.Component.SocketSender
   ]
 
   @doc """
@@ -36,14 +36,6 @@ defmodule Karaoke.User do
   end
 
   @doc """
-  Send a TCP message
-  """
-  def handle_info({:send_tcp, message}, %{ :socket => socket } = state) do
-    :ok = :gen_tcp.send(socket, message)   
-    {:noreply, state}
-  end
-
-  @doc """
     User is now in charge of the socket 
   """
   def handle_cast({:socket, socket}, state) do
@@ -52,12 +44,7 @@ defmodule Karaoke.User do
     {:noreply, state}
   end
 
-  """
-  Event handlers for Karaoke.User component
-  """
-  def handle_event({:socket_send, msg}, _state) do
-    send self(), {:send_tcp, msg}
-  end
+
 end
 
 
