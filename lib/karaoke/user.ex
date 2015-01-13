@@ -2,7 +2,7 @@ defmodule Karaoke.User do
   use Karaoke.ComponentServer.GenServer
 
   @components [
-      Karaoke.Component.SocketSender
+      Karaoke.Component.SocketHandler
   ]
 
   @doc """
@@ -31,7 +31,7 @@ defmodule Karaoke.User do
   TCP Message received
   """
   def handle_info({:tcp, _socket, packet}, state) do
-    Karaoke.Event.send_event(self(), {:socket_send, String.reverse(packet)})
+    Karaoke.Event.send_event(self(), {:socket_receive, packet})
     {:noreply, state}
   end
 

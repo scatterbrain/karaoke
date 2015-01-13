@@ -1,0 +1,2 @@
+%{"message_pack": {:hex, :message_pack, "0.1.4"},
+  "msgpax": {:hex, :msgpax, "0.6.0"}}

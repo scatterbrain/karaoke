@@ -17,8 +17,10 @@ defmodule KaraokeIntegrationTest do
   end
 
   defp send_and_recv(socket, command) do
-    :ok = :gen_tcp.send(socket, command)
-    {:ok, data} = :gen_tcp.recv(socket, 0, 1000)
+    {:ok, packet} = Msgpax.pack(command)    
+    :ok = :gen_tcp.send(socket, packet)
+    {:ok, packet} = :gen_tcp.recv(socket, 0, 1000)
+    {:ok, data} = Msgpax.unpack(packet)
     data
   end
 end
