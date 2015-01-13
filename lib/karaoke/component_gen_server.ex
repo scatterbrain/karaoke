@@ -16,7 +16,7 @@ defmodule Karaoke.ComponentServer.GenServer do
       Event received
       """
       def handle_info({:event, event}, state) do
-        Karaoke.Event.run_components(state.components, event, state)
+        {:ok, state} = Karaoke.Event.run_components(state.components, event, state)
         {:noreply, state}
       end
     end
