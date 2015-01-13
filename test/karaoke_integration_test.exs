@@ -13,14 +13,21 @@ defmodule KaraokeIntegrationTest do
   end
 
   test "server interaction", %{socket: socket} do
-    assert send_and_recv(socket, "Echo") == String.reverse("Echo")
+    assert send_and_recv(socket, %{:cmd => :reverse, :data => %{:str => "Echo"}}).str == String.reverse("Echo")
   end
 
   defp send_and_recv(socket, command) do
     {:ok, packet} = Msgpax.pack(command)    
     :ok = :gen_tcp.send(socket, packet)
-    {:ok, packet} = :gen_tcp.recv(socket, 0, 1000)
-    {:ok, data} = Msgpax.unpack(packet)
-    data
+    {:ok, packet} 
+    case :gen_tcp.recv(socket, 0, 1000) do
+      {:ok, packet} ->
+        {:ok, data} = Msgpax.unpack(packet)
+        Karaoke.Utils.atomify_map_keys(data)
+      error ->
+        #Give the logger time to print the error before proceeding to the error
+        :timer.sleep 1000      
+        raise error
+    end
   end
 end

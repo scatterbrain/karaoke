@@ -2,7 +2,8 @@ defmodule Karaoke.User do
   use Karaoke.ComponentServer.GenServer
 
   @components [
-      Karaoke.Component.SocketHandler
+      Karaoke.Component.SocketHandler, 
+      Karaoke.Component.Reverse
   ]
 
   @doc """
